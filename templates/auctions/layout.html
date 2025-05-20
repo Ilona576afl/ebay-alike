@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Commerce{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'auctions/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1><a href="{% url 'index' %}">🛒 Commerce</a></h1>
+        {% if user.is_authenticated %}
+            <p>Logged in as {{ user.username }} | <a href="{% url 'logout' %}">Logout / Вийти</a></p>
+        {% else %}
+            <a href="{% url 'login' %}">Login / Увійти</a> |
+            <a href="{% url 'register' %}">Register / Зареєструватися</a>
+        {% endif %}
+        
+    <nav>
+        <a href="{% url 'index' %}">🏠 Home / Головна</a> |
+        <a href="{% url 'create' %}">📝 Create Listing / Створити лот</a> |
+        <a href="{% url 'watchlist' %}">⭐ Watchlist / Обране</a> |
+        <a href="{% url 'categories' %}">📂 Categories / Категорії</a>
+    </nav>
+    <hr>
+    
+    </header>
+    {% block body %}{% endblock %}
+</body>
+</html>

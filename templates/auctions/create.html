@@ -1,0 +1,30 @@
+
+{% extends "auctions/layout.html" %}
+{% block title %}Create Listing / Створити лот{% endblock %}
+{% block body %}
+<h2>Create Listing / Створити лот</h2>
+<form action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    <label>Title / Назва:</label><br>
+    <input type="text" name="title" required><br><br>
+
+    <label>Description / Опис:</label><br>
+    <textarea name="description" rows="5" required></textarea><br><br>
+
+    <label>Starting Bid / Стартова ціна ($):</label><br>
+    <input type="number" step="0.01" name="starting_bid" required><br><br>
+
+    <label>Image URL (optional):</label><br>
+    <input type="url" name="image_url"><br><br>
+
+    <label>Category / Категорія:</label><br>
+    <select name="category">
+        <option value="">None / Без категорії</option>
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Create / Створити</button>
+</form>
+{% endblock %}

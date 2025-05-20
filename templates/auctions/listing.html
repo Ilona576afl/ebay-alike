@@ -1,0 +1,57 @@
+
+{% extends "auctions/layout.html" %}
+{% block title %}{{ listing.title }}{% endblock %}
+{% block body %}
+<h2>{{ listing.title }}</h2>
+<p><strong>Description / Опис:</strong><br>{{ listing.description }}</p>
+<p><strong>Current Price / Поточна ціна:</strong> ${{ listing.starting_bid }}</p>
+
+{% if listing.image_url %}
+    <img src="{{ listing.image_url }}" alt="{{ listing.title }}" width="300"><br>
+{% endif %}
+
+<p><strong>Category / Категорія:</strong> {{ listing.category }}</p>
+<p><strong>Status / Статус:</strong> {% if listing.is_active %}Active / Активний{% else %}Closed / Закритий{% endif %}</p>
+
+{% if user.is_authenticated %}
+    {% if listing.is_active %}
+        <form action="{% url 'bid' listing.id %}" method="post">
+            {% csrf_token %}
+            <label>Place Bid / Зробити ставку:</label>
+            <input type="number" name="bid" step="0.01" required>
+            <button type="submit">Bid / Ставка</button>
+        </form>
+
+        <form action="{% url 'toggle_watchlist' listing.id %}" method="post" style="margin-top: 10px;">
+            {% csrf_token %}
+            <button type="submit">
+                {% if on_watchlist %}Remove from Watchlist / Прибрати з обраного{% else %}Add to Watchlist / Додати в обране{% endif %}
+            </button>
+        </form>
+
+        {% if user == listing.creator %}
+            <form action="{% url 'close' listing.id %}" method="post" style="margin-top: 10px;">
+                {% csrf_token %}
+                <button type="submit">Close Auction / Закрити аукціон</button>
+            </form>
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+<h3>Comments / Коментарі</h3>
+<ul>
+    {% for comment in comments %}
+        <li><strong>{{ comment.author.username }}:</strong> {{ comment.content }}</li>
+    {% empty %}
+        <li>No comments yet / Ще немає коментарів.</li>
+    {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<form action="{% url 'comment' listing.id %}" method="post">
+    {% csrf_token %}
+    <textarea name="comment" rows="3" placeholder="Leave a comment... / Залишити коментар..." required></textarea><br>
+    <button type="submit">Add Comment / Додати коментар</button>
+</form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,13 @@
+
+{% extends "auctions/layout.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+{% block body %}
+<h2>Listings in {{ category.name }}</h2>
+<ul>
+    {% for listing in listings %}
+    <li><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a> - ${{ listing.starting_bid }}</li>
+    {% empty %}
+    <li>No listings in this category / У цій категорії немає лотів.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

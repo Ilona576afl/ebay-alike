@@ -1,0 +1,13 @@
+
+{% extends "auctions/layout.html" %}
+{% block title %}Watchlist / Обране{% endblock %}
+{% block body %}
+<h2>Watchlist / Список обраного</h2>
+<ul>
+    {% for listing in watchlist %}
+    <li><a href="{% url 'listing' listing.id %}">{{ listing.title }}</a> - ${{ listing.starting_bid }}</li>
+    {% empty %}
+    <li>No items in your watchlist / У вашому списку обраного нічого немає.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
